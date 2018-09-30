@@ -6,6 +6,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.x = 0;
+    this.y = 63;
+    this.speed = 100;
+    this.width = 50;
+    this.height = 50;
 };
 
 // Update the enemy's position, required method for game
@@ -14,6 +19,13 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    if (this.x > 500){
+        this.x = 0;
+    } else{
+        this.x = this.x + this.speed * dt;
+    }
+    checkCollisions();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -21,14 +33,114 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+function checkCollisions(){
+    /*
+    var rect1 = {
+        x: 5, y: 5, width: 50, height: 50
+    };
+
+    var rect2 = {
+        x: 20, y: 10, width: 10, height: 10
+    };
+
+    if (rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.y + rect1.height > rect2.y) {
+
+        console.log("Collision detected!");
+    }*/
+
+    if (player.x < enemy1.x + enemy1.width &&
+        player.x + player.width > enemy1.x &&
+        player.y < enemy1.y + enemy1.height &&
+        player.y + player.height > enemy1.y) {
+        console.log("Collision detected!");
+        player.deaths++;
+        player.reset();
+        console.log("Deaths: " + player.deaths);
+    }
+};
+
+
+
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+
+var Player = function() {
+    // Variables applied to each of our instances go here,
+    
+    // The image/sprite for our player, this uses
+    // a helper we've provided to easily load images
+    this.sprite = 'images/char-horn-girl.png';
+    this.x = 202;
+    this.y = 383;
+    this.score = 0;
+    this.deaths = 0;
+    this.width = 50;
+    this.height = 50;
+};
+
+// Update the player's position, required method for game
+// Parameter: dt, a time delta between ticks
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers
+    if (this.y < 0){
+        console.log("Water!");
+        this.score++;
+        console.log("Score: " + this.score);
+        this.reset();
+    }
+};
+
+Player.prototype.reset = function(){
+    this.y = 383;
+}
+
+// Draw the player on the screen, required method for game
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.handleInput = function(keyPressed) {
+    switch (keyPressed){
+        case "left":
+            if (this.x > 0)
+                this.x = this.x - 101;
+            break;
+        case "right":
+            if (this.x < 404)
+                this.x = this.x + 101;
+            break;
+        case "up":
+            if (this.y > 0)
+                this.y = this.y - 83;
+            break;
+        case "down":
+            if (this.y < 303)
+                this.y = this.y + 83;
+            break;  
+    };
+};
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+
+var player = new Player();
+
+var enemy1 = new Enemy();
+var enemy2 = new Enemy();
+enemy2.x = -200;
+enemy2.y = 166;
+var allEnemies = [enemy1,enemy2];
+
+
 
 
 
