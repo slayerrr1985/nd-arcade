@@ -26,7 +26,6 @@ Enemy.prototype.update = function(dt) {
         this.x = this.x + this.speed * dt;
     }
     this.checkCollisions();
-
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,15 +35,14 @@ Enemy.prototype.render = function() {
 
 Enemy.prototype.checkCollisions = function(){
 
-    if (player.x < this.x + this.width &&
-        player.x + player.width > this.x &&
-        player.y < this.y + this.height &&
-        player.y + player.height > this.y) {
-        console.log("Collision detected!");
+    // a collision is detected if the space occupied by the player and the enemy overlap
+    if (player.x < this.x + this.width && player.x + player.width > this.x &&
+        player.y < this.y + this.height && player.y + player.height > this.y) {
+        // when a collision is detected the "deaths counter" goes up
         player.deaths++;
-        player.reset();
-        console.log("Deaths: " + player.deaths);
         document.querySelector("#deaths").innerHTML = "Deaths: " + player.deaths;
+        // the player goes back to the initial position
+        player.reset();
     }
 
 };
@@ -61,6 +59,7 @@ var Player = function() {
     // The image/sprite for our player, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-horn-girl.png';
+    // the player always starts in the same position
     this.x = 202;
     this.y = 383;
     this.score = 0;
@@ -76,15 +75,16 @@ Player.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers
     if (this.y < 0){
-        console.log("Water!");
+        // when the player gets to the water the score goes up
         this.score++;
-        console.log("Score: " + this.score);
         document.querySelector("#score").innerHTML = "Score: " + this.score;
+        // the player goes back to the initial position
         this.reset();
     }
 };
 
 Player.prototype.reset = function(){
+    // the player always starts in the same position
     this.x = 202;
     this.y = 383;
 }
@@ -95,6 +95,7 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(keyPressed) {
+    // we move the player one tile at a time
     switch (keyPressed){
         case "left":
             if (this.x > 0)
