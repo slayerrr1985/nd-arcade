@@ -1,14 +1,14 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(posx,posy,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
-    this.y = 63;
-    this.speed = 100;
+    this.x = posx;
+    this.y = posy;
+    this.speed = speed;
     this.width = 50;
     this.height = 50;
 };
@@ -25,7 +25,6 @@ Enemy.prototype.update = function(dt) {
     } else{
         this.x = this.x + this.speed * dt;
     }
-    //checkCollisions();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -43,6 +42,7 @@ function checkCollisions(thisEnemy){
         player.deaths++;
         player.reset();
         console.log("Deaths: " + player.deaths);
+        document.querySelector("#deaths").innerHTML = "Deaths: " + player.deaths;
     }
 
 };
@@ -78,6 +78,7 @@ Player.prototype.update = function(dt) {
         console.log("Water!");
         this.score++;
         console.log("Score: " + this.score);
+        document.querySelector("#score").innerHTML = "Score: " + this.score;
         this.reset();
     }
 };
@@ -120,13 +121,11 @@ Player.prototype.handleInput = function(keyPressed) {
 
 var player = new Player();
 
-var enemy1 = new Enemy();
-var enemy2 = new Enemy();
-enemy2.x = -200;
-enemy2.y = 166;
-var allEnemies = [enemy1,enemy2];
+var enemy1 = new Enemy(0,63,100);
+var enemy2 = new Enemy(-200,145,90);
+var enemy3 = new Enemy(-50,225,150);
 
-
+var allEnemies = [enemy1,enemy2,enemy3];
 
 
 
