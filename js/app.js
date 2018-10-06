@@ -25,6 +25,8 @@ Enemy.prototype.update = function(dt) {
     } else{
         this.x = this.x + this.speed * dt;
     }
+    this.checkCollisions();
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -32,12 +34,12 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-function checkCollisions(thisEnemy){
+Enemy.prototype.checkCollisions = function(){
 
-    if (player.x < thisEnemy.x + thisEnemy.width &&
-        player.x + player.width > thisEnemy.x &&
-        player.y < thisEnemy.y + thisEnemy.height &&
-        player.y + player.height > thisEnemy.y) {
+    if (player.x < this.x + this.width &&
+        player.x + player.width > this.x &&
+        player.y < this.y + this.height &&
+        player.y + player.height > this.y) {
         console.log("Collision detected!");
         player.deaths++;
         player.reset();
@@ -46,7 +48,6 @@ function checkCollisions(thisEnemy){
     }
 
 };
-
 
 
 
